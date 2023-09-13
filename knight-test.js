@@ -1,5 +1,5 @@
-import UnweightedGraph from './unweightedGraph.js';
-import MoveIdGenerator from './moveIdGenerator.js';
+import UnweightedGraph from "./unweightedGraph.js";
+import MoveIdGenerator from "./moveIdGenerator.js";
 
 const kinghtMovements = new UnweightedGraph();
 const moveGen = MoveIdGenerator();
@@ -7,12 +7,11 @@ const SIZE = 8;
 
 populate(kinghtMovements, SIZE);
 addMovements(kinghtMovements, SIZE);
-console.log(kinghtMovements);
 
 //poblar el grafo - cada cuadro del tablero es un vertice
 function populate(graph, size) {
   for (let i = 0; i < size * size; i++) {
-    kinghtMovements.addVertex(i);
+    graph.addVertex(i);
   }
 }
 
@@ -27,9 +26,31 @@ function addMovements(graph, size) {
   }
 }
 
+function shortestPath(graph, a, b, size) {
+  const distance = new Array(size * size);
+  const previous = new Array(size * size);
+  const q = [];
+  const visited = new Array(size * size);
+
+  for (let vertex in graph.adjacencyList) {
+    if (vertex == a) {
+      distance[vertex] = 0;
+      visited[vertex] = true;
+    } else {
+      distance[vertex] = Infinity;
+      visited[vertex] = false;
+      previous[vertex] = null;
+    }
+  }
+
+  while (q) {}
+}
+
+shortestPath(kinghtMovements, 1, 2, 8);
+
 function printBoard(size) {
   const boardSize = size * size;
-  let line = '';
+  let line = "";
   let num = 0;
   for (let i = 0; i < size; i++) {
     num = boardSize - size * i;
@@ -41,7 +62,7 @@ function printBoard(size) {
         line += ` ${num - j - 1}`;
       }
     }
-    line += '\n';
+    line += "\n";
   }
   console.log(line);
 }
