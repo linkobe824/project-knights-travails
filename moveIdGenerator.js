@@ -1,6 +1,4 @@
-import Vertex from './vertex.js';
-
-export default function MoveGenerator() {
+export default function MoveIdGenerator() {
   function generateLegalMoves(x, y, bdSize) {
     const legalMoves = [];
     const moveOffset = [
@@ -56,14 +54,14 @@ export default function MoveGenerator() {
     const coordX = idToCoord(id, bdSize)[0];
     const coordY = idToCoord(id, bdSize)[1];
     const moves = generateLegalMoves(coordX, coordY, bdSize);
-    const movesArrObj = [];
+    const movesArrId = [];
 
     for (let move of moves) {
       let nodeId = coordToId(move[1], move[0], bdSize);
-      movesArrObj.push(new Vertex(nodeId, move));
+      movesArrId.push(nodeId);
     }
     
-    return movesArrObj;
+    return movesArrId;
   }
   return {
     idToCoord,
