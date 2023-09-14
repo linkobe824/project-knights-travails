@@ -1,8 +1,8 @@
 {
-  "name": "project-knights-travails",
+  "name": "project-knights-travail",
   "version": "1.0.0",
   "description": "",
-  "main": "graph.js",
+  "main": "moveIdGenerator.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
