@@ -1,16 +1,36 @@
 import UnweightedGraph from "./unweightedGraph.js";
 import MoveIdGenerator from "./moveIdGenerator.js";
 
+import readlineSync from "readline-sync";
+
 const kinghtMovements = new UnweightedGraph();
 const moveGen = MoveIdGenerator();
 const SIZE = 8;
 
 populate(kinghtMovements, SIZE);
 addMovements(kinghtMovements, SIZE);
-printBoard(SIZE)
-printMoves(kinghtMovements, 27, 28, SIZE);
+console.log(shortestPath(kinghtMovements, 0, 7, SIZE))
+printMoves(kinghtMovements,0,7,SIZE)
 
+// main();
 
+function main() {
+  introduction();
+  const input = getInputs();
+  printMoves(kinghtMovements, input[0], input[1], SIZE);
+}
+
+function introduction() {
+  console.log("Kinght's Travail");
+  console.log("Choose a position A and B from the following chess board");
+  printBoard(SIZE);
+}
+
+function getInputs(){
+  const start = readlineSync.question("A: ");
+  const end = readlineSync.question("B: ")
+  return [start, end];
+}
 
 //poblar el grafo - cada cuadro del tablero es un vertice
 function populate(graph, size) {
@@ -31,8 +51,8 @@ function addMovements(graph, size) {
 }
 
 function shortestPath(graph, a, b, size) {
-  const distance = new Array(size * size).fill(0);
-  const previous = new Array(size * size);
+  const distance = new Array(size * size);
+  const previous = new Array(size * size).fill(null);
   const q = [];
   const visited = new Array(size * size);
 
@@ -41,9 +61,10 @@ function shortestPath(graph, a, b, size) {
     if (vertex == a) {
       distance[vertex] = 0;
       visited[vertex] = true;
-      q.push(...[...graph.adjacencyList[vertex]]);
+      q.push(Number(...[...graph.adjacencyList[vertex]]));
       // asinga distancia de 1 ("a" a vertex) a los vecineos de "a"
       for(let i of q) {
+        console.log(i)
         distance[i] = 1;
         previous[i] = a;
       }
@@ -51,14 +72,18 @@ function shortestPath(graph, a, b, size) {
       distance[vertex] = Infinity;
       visited[vertex] = false;
     }
-    previous[vertex] = null;
+   
   }
 
   // BFS modificado.
   let dist;
   let node;
+  let answers = [];
   while (q.length > 0) {
     node = q.shift();
+    if(node == b) {
+      return [node, previous];
+    }
     if (!visited[node]){
       visited[node] = true;
       for (let neighboor of graph.adjacencyList[node]){
@@ -67,13 +92,11 @@ function shortestPath(graph, a, b, size) {
           distance[neighboor] = dist;
           previous[neighboor] = node;
         }
-        if(neighboor == b){
-          return [neighboor, previous];
-        }
         q.push(neighboor);
       }
     }
   }
+  return "There is no path";
 }
 
 function printMoves(graph, a, b, size){
@@ -92,7 +115,6 @@ function printMoves(graph, a, b, size){
       line += "->"
     }
   }
-
   console.log(`Kinght at ${a} took ${path.length - 1} moves to reach position ${b}`)
   console.log(line);
 
